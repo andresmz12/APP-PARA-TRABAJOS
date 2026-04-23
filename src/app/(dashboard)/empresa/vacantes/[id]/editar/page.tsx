@@ -3,7 +3,6 @@
 import { useEffect, useState } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import Link from 'next/link';
-import { createClient } from '@/lib/supabase/client';
 import { Card } from '@/components/ui/Card';
 import Button from '@/components/ui/Button';
 import Input from '@/components/ui/Input';
@@ -29,40 +28,27 @@ export default function EditarVacantePage() {
   const [error, setError] = useState('');
   const [requisitoInput, setRequisitoInput] = useState('');
   const [form, setForm] = useState({
-    titulo: '',
-    area: '' as JobArea,
-    cargo: '',
-    descripcion: '',
-    salario_min: '',
-    salario_max: '',
-    horario: '',
-    ubicacion: '',
-    modalidad: 'presencial',
-    requisitos: [] as string[],
+    titulo: '', area: '' as JobArea, cargo: '', descripcion: '',
+    salario_min: '', salario_max: '', horario: '', ubicacion: '',
+    modalidad: 'presencial', requisitos: [] as string[],
   });
 
   useEffect(() => {
-    async function load() {
-      const supabase = createClient();
-      const { data } = await supabase.from('jobs').select('*').eq('id', jobId).single();
-      if (data) {
-        const job = data as Job;
-        setForm({
-          titulo: job.titulo,
-          area: job.area,
-          cargo: job.cargo,
-          descripcion: job.descripcion,
-          salario_min: job.salario_min?.toString() ?? '',
-          salario_max: job.salario_max?.toString() ?? '',
-          horario: job.horario,
-          ubicacion: job.ubicacion,
-          modalidad: job.modalidad,
-          requisitos: job.requisitos ?? [],
-        });
-      }
-      setLoading(false);
-    }
-    load();
+    fetch(`/api/jobs/${jobId}`)
+      .then((r) => r.json())
+      .then(({ job }: { job: Job }) => {
+        if (job) {
+          setForm({
+            titulo: job.titulo, area: job.area, cargo: job.cargo,
+            descripcion: job.descripcion,
+            salario_min: job.salario_min?.toString() ?? '',
+            salario_max: job.salario_max?.toString() ?? '',
+            horario: job.horario, ubicacion: job.ubicacion,
+            modalidad: job.modalidad, requisitos: job.requisitos ?? [],
+          });
+        }
+        setLoading(false);
+      });
   }, [jobId]);
 
   function handleChange(field: keyof typeof form, value: string) {
@@ -85,17 +71,17 @@ export default function EditarVacantePage() {
     setSaving(true);
     setError('');
 
-    const supabase = createClient();
-    const { error: updateError } = await supabase
-      .from('jobs')
-      .update({
+    const res = await fetch(`/api/jobs/${jobId}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
         ...form,
         salario_min: form.salario_min ? parseInt(form.salario_min) : null,
         salario_max: form.salario_max ? parseInt(form.salario_max) : null,
-      })
-      .eq('id', jobId);
+      }),
+    });
 
-    if (updateError) {
+    if (!res.ok) {
       setError('No se pudo guardar los cambios.');
     } else {
       router.push('/empresa/vacantes');
@@ -121,81 +107,24 @@ export default function EditarVacantePage() {
       <Card>
         <form onSubmit={handleSubmit} className="flex flex-col gap-5">
           <div className="grid sm:grid-cols-2 gap-4">
-            <Select
-              label="Área"
-              options={areaOptions}
-              value={form.area}
-              onChange={(e) => handleChange('area', e.target.value)}
-              required
-            />
-            <Input
-              label="Cargo"
-              value={form.cargo}
-              onChange={(e) => handleChange('cargo', e.target.value)}
-              placeholder="Ej: Supervisor, Operario"
-              required
-            />
+            <Select label="Área" options={areaOptions} value={form.area} onChange={(e) => handleChange('area', e.target.value)} required />
+            <Input label="Cargo" value={form.cargo} onChange={(e) => handleChange('cargo', e.target.value)} placeholder="Ej: Supervisor, Operario" required />
           </div>
-          <Input
-            label="Título del empleo"
-            value={form.titulo}
-            onChange={(e) => handleChange('titulo', e.target.value)}
-            required
-          />
-          <Textarea
-            label="Descripción"
-            value={form.descripcion}
-            onChange={(e) => handleChange('descripcion', e.target.value)}
-            rows={4}
-            required
-          />
+          <Input label="Título del empleo" value={form.titulo} onChange={(e) => handleChange('titulo', e.target.value)} required />
+          <Textarea label="Descripción" value={form.descripcion} onChange={(e) => handleChange('descripcion', e.target.value)} rows={4} required />
           <div className="grid sm:grid-cols-2 gap-4">
-            <Input
-              label="Horario"
-              value={form.horario}
-              onChange={(e) => handleChange('horario', e.target.value)}
-              required
-            />
-            <Select
-              label="Modalidad"
-              options={modalidadOptions}
-              value={form.modalidad}
-              onChange={(e) => handleChange('modalidad', e.target.value)}
-            />
+            <Input label="Horario" value={form.horario} onChange={(e) => handleChange('horario', e.target.value)} required />
+            <Select label="Modalidad" options={modalidadOptions} value={form.modalidad} onChange={(e) => handleChange('modalidad', e.target.value)} />
           </div>
-          <Input
-            label="Ubicación"
-            value={form.ubicacion}
-            onChange={(e) => handleChange('ubicacion', e.target.value)}
-            required
-          />
+          <Input label="Ubicación" value={form.ubicacion} onChange={(e) => handleChange('ubicacion', e.target.value)} required />
           <div className="grid sm:grid-cols-2 gap-4">
-            <Input
-              label="Salario mínimo (COP)"
-              type="number"
-              value={form.salario_min}
-              onChange={(e) => handleChange('salario_min', e.target.value)}
-              min="0"
-            />
-            <Input
-              label="Salario máximo (COP)"
-              type="number"
-              value={form.salario_max}
-              onChange={(e) => handleChange('salario_max', e.target.value)}
-              min="0"
-            />
+            <Input label="Salario mínimo (COP)" type="number" value={form.salario_min} onChange={(e) => handleChange('salario_min', e.target.value)} min="0" />
+            <Input label="Salario máximo (COP)" type="number" value={form.salario_max} onChange={(e) => handleChange('salario_max', e.target.value)} min="0" />
           </div>
           <div>
             <p className="text-sm font-semibold text-slate-700 mb-2">Requisitos</p>
             <div className="flex gap-2">
-              <input
-                type="text"
-                value={requisitoInput}
-                onChange={(e) => setRequisitoInput(e.target.value)}
-                onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); addRequisito(); } }}
-                placeholder="Agregar requisito..."
-                className="flex-1 rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-700"
-              />
+              <input type="text" value={requisitoInput} onChange={(e) => setRequisitoInput(e.target.value)} onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); addRequisito(); } }} placeholder="Agregar requisito..." className="flex-1 rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-700" />
               <Button type="button" variant="outline" onClick={addRequisito}>Agregar</Button>
             </div>
             {form.requisitos.length > 0 && (
@@ -210,9 +139,7 @@ export default function EditarVacantePage() {
             )}
           </div>
 
-          {error && (
-            <div className="bg-red-50 border border-red-200 rounded-lg px-3 py-2 text-sm text-red-700">{error}</div>
-          )}
+          {error && <div className="bg-red-50 border border-red-200 rounded-lg px-3 py-2 text-sm text-red-700">{error}</div>}
 
           <div className="flex gap-3 justify-end pt-2 border-t border-slate-100">
             <Link href="/empresa/vacantes"><Button type="button" variant="outline">Cancelar</Button></Link>

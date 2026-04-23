@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { createClient } from '@/lib/supabase/client';
+import { signOut } from 'next-auth/react';
 import type { UserRole } from '@/lib/types';
 import { LogOut, Briefcase } from 'lucide-react';
 
@@ -27,8 +27,7 @@ export default function Navbar({ role, email }: NavbarProps) {
   const router = useRouter();
 
   async function handleLogout() {
-    const supabase = createClient();
-    await supabase.auth.signOut();
+    await signOut({ redirect: false });
     router.push('/login');
     router.refresh();
   }

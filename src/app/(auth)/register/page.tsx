@@ -3,7 +3,7 @@
 import { useState, Suspense } from 'react';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { createClient } from '@/lib/supabase/client';
+import { signIn } from 'next-auth/react';
 import { Card } from '@/components/ui/Card';
 import Button from '@/components/ui/Button';
 import Input from '@/components/ui/Input';
@@ -36,30 +36,22 @@ function RegisterForm() {
     }
 
     setLoading(true);
-    const supabase = createClient();
 
-    const { error: signUpError } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        data: { role },
-        emailRedirectTo: `${window.location.origin}/redirect`,
-      },
+    const res = await fetch('/api/register', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password, role }),
     });
+    const data = await res.json();
 
-    if (signUpError) {
-      setError(signUpError.message);
+    if (!res.ok) {
+      setError(data.error ?? 'Error al crear la cuenta.');
       setLoading(false);
       return;
     }
 
-    const { error: loginError } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
-
-    if (loginError) {
-      setError('Cuenta creada. Por favor inicia sesión.');
+    const result = await signIn('credentials', { email, password, redirect: false });
+    if (result?.error) {
       router.push('/login');
       return;
     }

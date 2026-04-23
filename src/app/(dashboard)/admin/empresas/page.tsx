@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useState, useCallback } from 'react';
-import { createClient } from '@/lib/supabase/client';
 import { Card } from '@/components/ui/Card';
 import { CompanyStatusBadge } from '@/components/ui/Badge';
 import Button from '@/components/ui/Button';
@@ -15,32 +14,30 @@ export default function AdminEmpresasPage() {
   const [filter, setFilter] = useState<'todas' | 'pendiente' | 'aprobada' | 'rechazada'>('todas');
 
   const fetchCompanies = useCallback(async () => {
-    const supabase = createClient();
-    let query = supabase
-      .from('companies')
-      .select('*')
-      .order('created_at', { ascending: false });
-
-    if (filter !== 'todas') query = query.eq('status', filter);
-
-    const { data } = await query;
-    setCompanies(data ?? []);
+    setLoading(true);
+    const res = await fetch(`/api/admin/companies?status=${filter}`);
+    const data = await res.json();
+    setCompanies(data.companies ?? []);
     setLoading(false);
   }, [filter]);
 
-  useEffect(() => {
-    fetchCompanies();
-  }, [fetchCompanies]);
+  useEffect(() => { fetchCompanies(); }, [fetchCompanies]);
 
   async function updateStatus(id: string, status: 'aprobada' | 'rechazada') {
-    const supabase = createClient();
-    await supabase.from('companies').update({ status }).eq('id', id);
+    await fetch(`/api/admin/companies/${id}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ status }),
+    });
     fetchCompanies();
   }
 
   async function toggleVerified(id: string, current: boolean) {
-    const supabase = createClient();
-    await supabase.from('companies').update({ verificada: !current }).eq('id', id);
+    await fetch(`/api/admin/companies/${id}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ verificada: !current }),
+    });
     fetchCompanies();
   }
 
@@ -58,7 +55,6 @@ export default function AdminEmpresasPage() {
         <p className="text-sm text-slate-500 mt-0.5">Aprueba, rechaza y verifica empresas.</p>
       </div>
 
-      {/* Filtros */}
       <div className="flex gap-2 flex-wrap">
         {filters.map((f) => (
           <button
@@ -104,40 +100,27 @@ export default function AdminEmpresasPage() {
                     Registrada {formatDate(company.created_at)}
                   </p>
                   {company.descripcion && (
-                    <p className="text-sm text-slate-600 mt-1.5 line-clamp-2">
-                      {company.descripcion}
-                    </p>
+                    <p className="text-sm text-slate-600 mt-1.5 line-clamp-2">{company.descripcion}</p>
                   )}
                 </div>
 
                 <div className="flex flex-wrap gap-2 shrink-0">
-                  {/* Verificar / desverificar */}
                   <Button
                     size="sm"
                     variant={company.verificada ? 'secondary' : 'outline'}
                     onClick={() => toggleVerified(company.id, company.verificada)}
-                    title={company.verificada ? 'Quitar verificación' : 'Marcar como verificada'}
                   >
                     <BadgeCheck className="w-3.5 h-3.5" />
                     {company.verificada ? 'Verificada' : 'Verificar'}
                   </Button>
-
                   {company.status !== 'aprobada' && (
-                    <Button
-                      size="sm"
-                      variant="primary"
-                      onClick={() => updateStatus(company.id, 'aprobada')}
-                    >
+                    <Button size="sm" variant="primary" onClick={() => updateStatus(company.id, 'aprobada')}>
                       <CheckCircle2 className="w-3.5 h-3.5" />
                       Aprobar
                     </Button>
                   )}
                   {company.status !== 'rechazada' && (
-                    <Button
-                      size="sm"
-                      variant="danger"
-                      onClick={() => updateStatus(company.id, 'rechazada')}
-                    >
+                    <Button size="sm" variant="danger" onClick={() => updateStatus(company.id, 'rechazada')}>
                       <XCircle className="w-3.5 h-3.5" />
                       Rechazar
                     </Button>

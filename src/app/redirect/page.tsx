@@ -1,41 +1,21 @@
 import { redirect } from 'next/navigation';
-import { createClient } from '@/lib/supabase/server';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/lib/auth';
+import { queryOne } from '@/lib/db';
 
-// Redirige al dashboard correcto según el rol del usuario
 export default async function RedirectPage() {
-  const supabase = createClient();
+  const session = await getServerSession(authOptions);
+  if (!session) redirect('/login');
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const { role, id } = session.user;
 
-  if (!user) redirect('/login');
+  if (role === 'admin') redirect('/admin');
 
-  const { data: profile } = await supabase
-    .from('profiles')
-    .select('role')
-    .eq('id', user.id)
-    .single();
-
-  if (!profile) redirect('/login');
-
-  if (profile.role === 'admin') redirect('/admin');
-  if (profile.role === 'empresa') {
-    // Revisar si ya tiene perfil de empresa
-    const { data: company } = await supabase
-      .from('companies')
-      .select('id')
-      .eq('owner_id', user.id)
-      .single();
+  if (role === 'empresa') {
+    const company = await queryOne('SELECT id FROM companies WHERE owner_id = $1', [id]);
     redirect(company ? '/empresa' : '/empresa/perfil');
   }
 
-  // candidato
-  const { data: candidateProfile } = await supabase
-    .from('candidate_profiles')
-    .select('id')
-    .eq('id', user.id)
-    .single();
-
-  redirect(candidateProfile ? '/candidato' : '/candidato/perfil');
+  const profile = await queryOne('SELECT id FROM candidate_profiles WHERE id = $1', [id]);
+  redirect(profile ? '/candidato' : '/candidato/perfil');
 }
