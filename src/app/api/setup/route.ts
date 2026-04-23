@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import bcrypt from 'bcryptjs';
 import { queryOne } from '@/lib/db';
 
-export async function POST() {
+async function setup() {
   const existing = await queryOne('SELECT id FROM users WHERE role = $1 LIMIT 1', ['admin']);
   if (existing) {
     return NextResponse.json({ message: 'Admin ya existe.' }, { status: 200 });
@@ -16,3 +16,7 @@ export async function POST() {
 
   return NextResponse.json({ message: 'Admin creado. Email: admin@trabajos.com / Admin123!' }, { status: 201 });
 }
+
+export async function GET() { return setup(); }
+
+export async function POST() { return setup(); }
