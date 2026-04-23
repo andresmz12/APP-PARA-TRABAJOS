@@ -116,7 +116,9 @@ export default async function CandidatoFeedPage({ searchParams }: PageProps) {
         </div>
       )}
 
-      <JobFilters />
+      <Suspense fallback={<div className="h-12" />}>
+        <JobFilters />
+      </Suspense>
 
       <Suspense fallback={<p className="text-sm text-slate-500">Buscando vacantes...</p>}>
         <JobList userId={user.id} searchParams={searchParams} />

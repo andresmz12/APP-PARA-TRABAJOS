@@ -1,5 +1,5 @@
 import { createClient } from '@/lib/supabase/server';
-import { Card, CardHeader, CardTitle } from '@/components/ui/Card';
+import { Card } from '@/components/ui/Card';
 import { Building2, Briefcase, Users, Clock } from 'lucide-react';
 
 export default async function AdminDashboard() {

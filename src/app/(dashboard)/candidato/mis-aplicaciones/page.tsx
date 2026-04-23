@@ -1,8 +1,7 @@
 import { redirect } from 'next/navigation';
 import { createClient } from '@/lib/supabase/server';
 import { Card } from '@/components/ui/Card';
-import { ApplicationStatusBadge } from '@/components/ui/Badge';
-import { Badge } from '@/components/ui/Badge';
+import { ApplicationStatusBadge, Badge } from '@/components/ui/Badge';
 import { ClipboardList, MapPin, Clock, Building2, BadgeCheck } from 'lucide-react';
 import { JOB_AREAS, type Application } from '@/lib/types';
 import { formatSalary, timeAgo } from '@/lib/utils';
@@ -67,7 +66,7 @@ export default async function MisAplicacionesPage() {
                         <Building2 className="w-3.5 h-3.5 shrink-0" />
                         <span>{job?.company?.nombre}</span>
                         {job?.company?.verificada && (
-                          <BadgeCheck className="w-3.5 h-3.5 text-green-500 shrink-0" title="Empresa verificada" />
+                          <BadgeCheck className="w-3.5 h-3.5 text-green-500 shrink-0" aria-label="Empresa verificada" />
                         )}
                       </div>
                     </div>

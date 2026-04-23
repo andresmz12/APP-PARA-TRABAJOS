@@ -20,7 +20,7 @@ import {
 import { timeAgo } from '@/lib/utils';
 import type { Application, ApplicationStatus } from '@/lib/types';
 
-interface RichApplication extends Application {
+interface RichApplication extends Omit<Application, 'job' | 'candidate'> {
   job: { titulo: string; area: string };
   candidate: {
     nombre: string;

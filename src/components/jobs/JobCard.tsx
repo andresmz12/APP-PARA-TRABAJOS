@@ -62,7 +62,7 @@ export default function JobCard({ job, hasApplied = false, hasProfile = false, o
                 {job.company_nombre ?? job.company?.nombre}
               </span>
               {(job.company_verificada ?? job.company?.verificada) && (
-                <CheckCircle2 className="w-3.5 h-3.5 text-green-500 shrink-0" title="Empresa verificada" />
+                <CheckCircle2 className="w-3.5 h-3.5 text-green-500 shrink-0" aria-label="Empresa verificada" />
               )}
             </div>
           </div>

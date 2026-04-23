@@ -1,7 +1,6 @@
 import { createClient } from '@/lib/supabase/server';
 import { Card } from '@/components/ui/Card';
-import { JobStatusBadge } from '@/components/ui/Badge';
-import { Badge } from '@/components/ui/Badge';
+import { JobStatusBadge, Badge } from '@/components/ui/Badge';
 import { MapPin, Briefcase } from 'lucide-react';
 import { JOB_AREAS, type Job } from '@/lib/types';
 import { formatDate } from '@/lib/utils';

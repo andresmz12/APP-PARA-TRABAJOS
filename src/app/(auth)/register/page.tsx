@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, Suspense } from 'react';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
@@ -9,9 +9,8 @@ import Button from '@/components/ui/Button';
 import Input from '@/components/ui/Input';
 import { Users, Building2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import type { UserRole } from '@/lib/types';
 
-export default function RegisterPage() {
+function RegisterForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const initialRole = searchParams.get('rol') === 'empresa' ? 'empresa' : 'candidato';
@@ -54,7 +53,6 @@ export default function RegisterPage() {
       return;
     }
 
-    // Iniciar sesión directamente (sin confirmación de email para agilizar el MVP)
     const { error: loginError } = await supabase.auth.signInWithPassword({
       email,
       password,
@@ -75,7 +73,6 @@ export default function RegisterPage() {
       <h1 className="text-xl font-bold text-slate-900 mb-1">Crear cuenta</h1>
       <p className="text-sm text-slate-500 mb-5">¿Cómo vas a usar la plataforma?</p>
 
-      {/* Selector de rol */}
       <div className="grid grid-cols-2 gap-2 mb-6">
         {(
           [
@@ -153,5 +150,13 @@ export default function RegisterPage() {
         </Link>
       </p>
     </Card>
+  );
+}
+
+export default function RegisterPage() {
+  return (
+    <Suspense fallback={<div className="h-96 flex items-center justify-center text-sm text-slate-400">Cargando...</div>}>
+      <RegisterForm />
+    </Suspense>
   );
 }
