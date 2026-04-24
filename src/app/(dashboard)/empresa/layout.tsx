@@ -6,10 +6,10 @@ import Sidebar from '@/components/layouts/Sidebar';
 import { LayoutDashboard, Briefcase, Users, Building2 } from 'lucide-react';
 
 const navItems = [
-  { href: '/empresa', label: 'Inicio', icon: LayoutDashboard },
-  { href: '/empresa/vacantes', label: 'Vacantes', icon: Briefcase },
-  { href: '/empresa/aplicaciones', label: 'Aplicaciones', icon: Users },
-  { href: '/empresa/perfil', label: 'Mi Empresa', icon: Building2 },
+  { href: '/empresa', label: 'Inicio', icon: <LayoutDashboard className="w-4 h-4 shrink-0" /> },
+  { href: '/empresa/vacantes', label: 'Vacantes', icon: <Briefcase className="w-4 h-4 shrink-0" /> },
+  { href: '/empresa/aplicaciones', label: 'Aplicaciones', icon: <Users className="w-4 h-4 shrink-0" /> },
+  { href: '/empresa/perfil', label: 'Mi Empresa', icon: <Building2 className="w-4 h-4 shrink-0" /> },
 ];
 
 export default async function EmpresaLayout({ children }: { children: React.ReactNode }) {

@@ -6,9 +6,9 @@ import Sidebar from '@/components/layouts/Sidebar';
 import { Building2, LayoutDashboard, Briefcase } from 'lucide-react';
 
 const navItems = [
-  { href: '/admin', label: 'Panel', icon: LayoutDashboard },
-  { href: '/admin/empresas', label: 'Empresas', icon: Building2 },
-  { href: '/admin/empleos', label: 'Empleos', icon: Briefcase },
+  { href: '/admin', label: 'Panel', icon: <LayoutDashboard className="w-4 h-4 shrink-0" /> },
+  { href: '/admin/empresas', label: 'Empresas', icon: <Building2 className="w-4 h-4 shrink-0" /> },
+  { href: '/admin/empleos', label: 'Empleos', icon: <Briefcase className="w-4 h-4 shrink-0" /> },
 ];
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {

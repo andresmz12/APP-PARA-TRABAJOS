@@ -3,12 +3,12 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
-import { LucideIcon } from 'lucide-react';
+import type { ReactNode } from 'react';
 
 interface NavItem {
   href: string;
   label: string;
-  icon: LucideIcon;
+  icon: ReactNode;
 }
 
 interface SidebarProps {
@@ -23,7 +23,7 @@ export default function Sidebar({ items }: SidebarProps) {
       {/* Desktop sidebar */}
       <aside className="hidden md:flex flex-col w-56 shrink-0 border-r border-slate-200 bg-white min-h-[calc(100vh-3.5rem)]">
         <nav className="p-3 flex flex-col gap-0.5">
-          {items.map(({ href, label, icon: Icon }) => {
+          {items.map(({ href, label, icon }) => {
             const active = pathname === href || pathname.startsWith(href + '/');
             return (
               <Link
@@ -36,7 +36,7 @@ export default function Sidebar({ items }: SidebarProps) {
                     : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
                 )}
               >
-                <Icon className={cn('w-4 h-4 shrink-0', active && 'text-blue-700')} />
+                {icon}
                 {label}
               </Link>
             );
@@ -46,7 +46,7 @@ export default function Sidebar({ items }: SidebarProps) {
 
       {/* Mobile bottom nav */}
       <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 z-20 flex">
-        {items.map(({ href, label, icon: Icon }) => {
+        {items.map(({ href, label, icon }) => {
           const active = pathname === href || pathname.startsWith(href + '/');
           return (
             <Link
@@ -57,7 +57,7 @@ export default function Sidebar({ items }: SidebarProps) {
                 active ? 'text-blue-700' : 'text-slate-500'
               )}
             >
-              <Icon className="w-5 h-5" />
+              {icon}
               <span>{label}</span>
             </Link>
           );

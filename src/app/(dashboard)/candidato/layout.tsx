@@ -6,9 +6,9 @@ import Sidebar from '@/components/layouts/Sidebar';
 import { Search, ClipboardList, User } from 'lucide-react';
 
 const navItems = [
-  { href: '/candidato', label: 'Empleos', icon: Search },
-  { href: '/candidato/mis-aplicaciones', label: 'Mis aplicaciones', icon: ClipboardList },
-  { href: '/candidato/perfil', label: 'Mi perfil', icon: User },
+  { href: '/candidato', label: 'Empleos', icon: <Search className="w-4 h-4 shrink-0" /> },
+  { href: '/candidato/mis-aplicaciones', label: 'Mis aplicaciones', icon: <ClipboardList className="w-4 h-4 shrink-0" /> },
+  { href: '/candidato/perfil', label: 'Mi perfil', icon: <User className="w-4 h-4 shrink-0" /> },
 ];
 
 export default async function CandidatoLayout({ children }: { children: React.ReactNode }) {
