@@ -111,15 +111,15 @@ export default function NuevaVacantePage() {
                 <Input label="Horario" value={form.horario} onChange={(e) => handleChange('horario', e.target.value)} placeholder="Ej: Lunes a Viernes 7am-5pm" required />
                 <Select label="Modalidad" options={modalidadOptions} value={form.modalidad} onChange={(e) => handleChange('modalidad', e.target.value)} />
               </div>
-              <Input label="Ubicación" value={form.ubicacion} onChange={(e) => handleChange('ubicacion', e.target.value)} placeholder="Ej: Zona Industrial, Bogotá" required />
+              <Input label="Ubicación" value={form.ubicacion} onChange={(e) => handleChange('ubicacion', e.target.value)} placeholder="Ej: Downtown Miami, FL" required />
             </div>
           </div>
 
           <div>
             <p className="text-sm font-semibold text-slate-700 mb-3">Salario (opcional)</p>
             <div className="grid sm:grid-cols-2 gap-4">
-              <Input label="Salario mínimo (COP)" type="number" value={form.salario_min} onChange={(e) => handleChange('salario_min', e.target.value)} placeholder="Ej: 1300000" min="0" />
-              <Input label="Salario máximo (COP)" type="number" value={form.salario_max} onChange={(e) => handleChange('salario_max', e.target.value)} placeholder="Ej: 1800000" min="0" />
+              <Input label="Salario mínimo (USD/hr o anual)" type="number" value={form.salario_min} onChange={(e) => handleChange('salario_min', e.target.value)} placeholder="Ej: 15" min="0" />
+              <Input label="Salario máximo (USD/hr o anual)" type="number" value={form.salario_max} onChange={(e) => handleChange('salario_max', e.target.value)} placeholder="Ej: 20" min="0" />
             </div>
           </div>
 

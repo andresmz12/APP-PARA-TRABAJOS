@@ -8,9 +8,9 @@ export function cn(...inputs: ClassValue[]) {
 export function formatSalary(min?: number | null, max?: number | null): string {
   if (!min && !max) return 'Salario a convenir';
   const fmt = (n: number) =>
-    new Intl.NumberFormat('es-CO', {
+    new Intl.NumberFormat('en-US', {
       style: 'currency',
-      currency: 'COP',
+      currency: 'USD',
       minimumFractionDigits: 0,
       maximumFractionDigits: 0,
     }).format(n);
@@ -20,7 +20,7 @@ export function formatSalary(min?: number | null, max?: number | null): string {
 }
 
 export function formatDate(dateStr: string): string {
-  return new Intl.DateTimeFormat('es-CO', {
+  return new Intl.DateTimeFormat('es-US', {
     year: 'numeric',
     month: 'short',
     day: 'numeric',

@@ -108,8 +108,8 @@ export default function CandidatoPerfilPage() {
             <div className="flex flex-col gap-4">
               <Input label="Nombre completo" value={form.nombre} onChange={(e) => handleChange('nombre', e.target.value)} placeholder="Tu nombre completo" required />
               <div className="grid grid-cols-2 gap-4">
-                <Input label="Teléfono" type="tel" value={form.telefono} onChange={(e) => handleChange('telefono', e.target.value)} placeholder="300 123 4567" />
-                <Input label="Ciudad" value={form.ciudad} onChange={(e) => handleChange('ciudad', e.target.value)} placeholder="Ej: Bogotá" />
+                <Input label="Teléfono" type="tel" value={form.telefono} onChange={(e) => handleChange('telefono', e.target.value)} placeholder="(305) 123-4567" />
+                <Input label="Ciudad, Estado" value={form.ciudad} onChange={(e) => handleChange('ciudad', e.target.value)} placeholder="Ej: Houston, TX" />
               </div>
             </div>
           </div>

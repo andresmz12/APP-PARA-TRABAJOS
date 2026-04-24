@@ -83,11 +83,11 @@ export default function EmpresaPerfilPage() {
             <div className="text-xs text-slate-500">Logo de empresa (próximamente)</div>
           </div>
 
-          <Input label="Nombre de la empresa" value={form.nombre} onChange={(e) => handleChange('nombre', e.target.value)} placeholder="Ej: Distribuidora López S.A.S" required />
+          <Input label="Nombre de la empresa" value={form.nombre} onChange={(e) => handleChange('nombre', e.target.value)} placeholder="Ej: Florida Fresh Logistics LLC" required />
           <Textarea label="Descripción" value={form.descripcion} onChange={(e) => handleChange('descripcion', e.target.value)} placeholder="¿A qué se dedica tu empresa?" rows={3} hint="Ayuda a los candidatos a conocer tu empresa." />
           <div className="grid sm:grid-cols-2 gap-4">
-            <Input label="Ciudad" value={form.ciudad} onChange={(e) => handleChange('ciudad', e.target.value)} placeholder="Ej: Bogotá" />
-            <Input label="Teléfono de contacto" type="tel" value={form.telefono} onChange={(e) => handleChange('telefono', e.target.value)} placeholder="Ej: 300 123 4567" />
+            <Input label="Ciudad, Estado" value={form.ciudad} onChange={(e) => handleChange('ciudad', e.target.value)} placeholder="Ej: Miami, FL" />
+            <Input label="Teléfono de contacto" type="tel" value={form.telefono} onChange={(e) => handleChange('telefono', e.target.value)} placeholder="Ej: (305) 123-4567" />
           </div>
           <Input label="Sitio web" type="url" value={form.sitio_web} onChange={(e) => handleChange('sitio_web', e.target.value)} placeholder="https://..." />
 
