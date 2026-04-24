@@ -22,16 +22,21 @@ export const authOptions: NextAuthOptions = {
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) return null;
 
-        const user = await queryOne<DbUser>(
-          'SELECT id, email, password_hash, role FROM users WHERE email = $1',
-          [credentials.email.toLowerCase()]
-        );
-        if (!user) return null;
+        try {
+          const user = await queryOne<DbUser>(
+            'SELECT id, email, password_hash, role FROM users WHERE email = $1',
+            [credentials.email.toLowerCase()]
+          );
+          if (!user) return null;
 
-        const valid = await bcrypt.compare(credentials.password, user.password_hash);
-        if (!valid) return null;
+          const valid = await bcrypt.compare(credentials.password, user.password_hash);
+          if (!valid) return null;
 
-        return { id: user.id, email: user.email, role: user.role };
+          return { id: user.id, email: user.email, role: user.role };
+        } catch (err) {
+          console.error('[auth] authorize error:', err);
+          return null;
+        }
       },
     }),
   ],
