@@ -4,13 +4,14 @@ import { useEffect, useState, useCallback } from 'react';
 import { Card } from '@/components/ui/Card';
 import { ApplicationStatusBadge } from '@/components/ui/Badge';
 import Button from '@/components/ui/Button';
-import { Users, Phone, MapPin, Car, CalendarDays, Briefcase, CheckCircle2, XCircle, MessageSquare } from 'lucide-react';
+import { Users, Phone, MapPin, Car, CalendarDays, Briefcase, CheckCircle2, XCircle, MessageSquare, StickyNote } from 'lucide-react';
 import { timeAgo } from '@/lib/utils';
 import type { ApplicationStatus } from '@/lib/types';
 
 interface RichApplication {
   id: string;
   status: ApplicationStatus;
+  nota_empresa?: string;
   created_at: string;
   job: { titulo: string; area: string };
   candidate: {
@@ -32,6 +33,9 @@ export default function EmpresaAplicacionesPage() {
   const [loading, setLoading] = useState(true);
   const [filterStatus, setFilterStatus] = useState<ApplicationStatus | 'todas'>('todas');
   const [expanded, setExpanded] = useState<string | null>(null);
+  const [notaEditing, setNotaEditing] = useState<string | null>(null);
+  const [notaValue, setNotaValue] = useState('');
+  const [savingNota, setSavingNota] = useState(false);
 
   useEffect(() => {
     fetch('/api/companies')
@@ -58,6 +62,23 @@ export default function EmpresaAplicacionesPage() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ status }),
     });
+    fetchApplications();
+  }
+
+  function startEditNota(app: RichApplication) {
+    setNotaEditing(app.id);
+    setNotaValue(app.nota_empresa ?? '');
+  }
+
+  async function saveNota(appId: string) {
+    setSavingNota(true);
+    await fetch(`/api/applications/${appId}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ nota_empresa: notaValue }),
+    });
+    setSavingNota(false);
+    setNotaEditing(null);
     fetchApplications();
   }
 
@@ -108,11 +129,21 @@ export default function EmpresaAplicacionesPage() {
                     {app.candidate?.ciudad && <span className="flex items-center gap-1"><MapPin className="w-3 h-3" /> {app.candidate.ciudad}</span>}
                     <span>{timeAgo(app.created_at)}</span>
                   </div>
+                  {app.nota_empresa && notaEditing !== app.id && (
+                    <p className="mt-1.5 text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded px-2 py-1 flex items-start gap-1.5">
+                      <StickyNote className="w-3 h-3 mt-0.5 shrink-0" />
+                      {app.nota_empresa}
+                    </p>
+                  )}
                 </div>
 
                 <div className="flex flex-wrap gap-2 shrink-0">
                   <button onClick={() => setExpanded(expanded === app.id ? null : app.id)} className="text-xs text-blue-700 underline hover:no-underline">
                     {expanded === app.id ? 'Ocultar perfil' : 'Ver perfil'}
+                  </button>
+                  <button onClick={() => startEditNota(app)} className="text-xs text-amber-600 underline hover:no-underline flex items-center gap-1">
+                    <StickyNote className="w-3 h-3" />
+                    {app.nota_empresa ? 'Editar nota' : 'Agregar nota'}
                   </button>
                   {app.status !== 'contactado' && (
                     <Button size="sm" variant="primary" onClick={() => updateStatus(app.id, 'contactado')}>
@@ -126,6 +157,24 @@ export default function EmpresaAplicacionesPage() {
                   )}
                 </div>
               </div>
+
+              {/* Nota interna editable */}
+              {notaEditing === app.id && (
+                <div className="mt-3 pt-3 border-t border-slate-100">
+                  <p className="text-xs font-semibold text-slate-500 mb-1.5">Nota interna (solo visible para tu empresa)</p>
+                  <textarea
+                    value={notaValue}
+                    onChange={(e) => setNotaValue(e.target.value)}
+                    rows={2}
+                    placeholder="Ej: Candidato disponible desde el lunes, llamar por las mañanas..."
+                    className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-700 resize-none"
+                  />
+                  <div className="flex gap-2 mt-2">
+                    <Button size="sm" variant="primary" loading={savingNota} onClick={() => saveNota(app.id)}>Guardar nota</Button>
+                    <Button size="sm" variant="ghost" onClick={() => setNotaEditing(null)}>Cancelar</Button>
+                  </div>
+                </div>
+              )}
 
               {expanded === app.id && app.candidate && (
                 <div className="mt-4 pt-4 border-t border-slate-100 grid sm:grid-cols-2 gap-4 text-sm">
@@ -164,14 +213,12 @@ export default function EmpresaAplicacionesPage() {
                   </div>
                   <div>
                     <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">Movilidad</p>
-                    <div className="space-y-1">
-                      <div className="flex items-center gap-1.5">
-                        <Car className="w-3.5 h-3.5 text-slate-400" />
-                        <span className={app.candidate.tiene_vehiculo ? 'text-green-700 font-medium' : 'text-slate-500'}>
-                          Vehículo: {app.candidate.tiene_vehiculo ? 'Sí' : 'No'}
-                        </span>
-                      </div>
-</div>
+                    <div className="flex items-center gap-1.5">
+                      <Car className="w-3.5 h-3.5 text-slate-400" />
+                      <span className={app.candidate.tiene_vehiculo ? 'text-green-700 font-medium' : 'text-slate-500'}>
+                        Vehículo: {app.candidate.tiene_vehiculo ? 'Sí' : 'No'}
+                      </span>
+                    </div>
                   </div>
                   {app.candidate.profile?.email && (
                     <div className="sm:col-span-2 pt-2 border-t border-slate-100">

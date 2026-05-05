@@ -9,6 +9,13 @@ export async function GET(req: NextRequest) {
 
   const companyId = req.nextUrl.searchParams.get('companyId');
   if (companyId) {
+    // Verificar que la empresa pertenece al usuario autenticado
+    const company = await queryOne(
+      'SELECT id FROM companies WHERE id = $1 AND owner_id = $2',
+      [companyId, session.user.id]
+    );
+    if (!company) return NextResponse.json({ error: 'No autorizado.' }, { status: 403 });
+
     const rows = await query(
       `SELECT a.*,
         json_build_object('titulo', j.titulo, 'area', j.area, 'company_id', j.company_id) AS job,
