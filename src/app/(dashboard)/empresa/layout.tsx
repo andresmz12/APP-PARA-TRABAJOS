@@ -3,6 +3,7 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import Navbar from '@/components/layouts/Navbar';
 import Sidebar from '@/components/layouts/Sidebar';
+import InactivityGuard from '@/components/InactivityGuard';
 import { LayoutDashboard, Briefcase, Users, Building2 } from 'lucide-react';
 
 const navItems = [
@@ -24,6 +25,7 @@ export default async function EmpresaLayout({ children }: { children: React.Reac
         <Sidebar items={navItems} />
         <main className="flex-1 p-4 sm:p-6 pb-20 md:pb-6 max-w-5xl">{children}</main>
       </div>
+      <InactivityGuard />
     </div>
   );
 }
