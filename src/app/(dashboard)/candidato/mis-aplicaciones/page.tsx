@@ -7,6 +7,7 @@ import { ApplicationStatusBadge, Badge } from '@/components/ui/Badge';
 import { ClipboardList, MapPin, Clock, Building2, BadgeCheck } from 'lucide-react';
 import { JOB_AREAS, type Application, type Job, type Company } from '@/lib/types';
 import { formatSalary, timeAgo } from '@/lib/utils';
+import WithdrawButton from '@/components/jobs/WithdrawButton';
 
 type RichApp = Application & {
   job: Pick<Job, 'titulo' | 'area' | 'cargo' | 'horario' | 'ubicacion' | 'salario_min' | 'salario_max'> & {
@@ -67,22 +68,21 @@ export default async function MisAplicacionesPage() {
                       <Building2 className="w-3.5 h-3.5 shrink-0" />
                       <span>{app.job?.company?.nombre}</span>
                       {app.job?.company?.verificada && (
-                        <BadgeCheck className="w-3.5 h-3.5 text-green-500 shrink-0" aria-label="Empresa verificada" />
+                        <BadgeCheck className="w-3.5 h-3.5 text-green-500 shrink-0" />
                       )}
                     </div>
                   </div>
-                  {app.job?.area && <Badge variant="info">{JOB_AREAS[app.job.area]}</Badge>}
+                  <div className="flex items-center gap-2">
+                    {app.job?.area && <Badge variant="info">{JOB_AREAS[app.job.area]}</Badge>}
+                    {app.status === 'pendiente' && <WithdrawButton applicationId={app.id} />}
+                  </div>
                 </div>
 
                 <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-slate-400">
-                  {app.job?.ubicacion && (
-                    <span className="flex items-center gap-1"><MapPin className="w-3 h-3" /> {app.job.ubicacion}</span>
-                  )}
-                  {app.job?.horario && (
-                    <span className="flex items-center gap-1"><Clock className="w-3 h-3" /> {app.job.horario}</span>
-                  )}
+                  {app.job?.ubicacion && <span className="flex items-center gap-1"><MapPin className="w-3 h-3" /> {app.job.ubicacion}</span>}
+                  {app.job?.horario && <span className="flex items-center gap-1"><Clock className="w-3 h-3" /> {app.job.horario}</span>}
                   {(app.job?.salario_min || app.job?.salario_max) && (
-                    <span>{formatSalary(app.job.salario_min, app.job.salario_max)}</span>
+                    <span className="text-green-700 font-medium">{formatSalary(app.job.salario_min, app.job.salario_max)}</span>
                   )}
                   <span>Aplicaste {timeAgo(app.created_at)}</span>
                 </div>

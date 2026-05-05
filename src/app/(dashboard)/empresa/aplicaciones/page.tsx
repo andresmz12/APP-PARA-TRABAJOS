@@ -4,7 +4,7 @@ import { useEffect, useState, useCallback } from 'react';
 import { Card } from '@/components/ui/Card';
 import { ApplicationStatusBadge } from '@/components/ui/Badge';
 import Button from '@/components/ui/Button';
-import { Users, Phone, MapPin, Car, CalendarDays, Briefcase, CheckCircle2, XCircle, MessageSquare, StickyNote } from 'lucide-react';
+import { Users, Phone, MapPin, Car, CalendarDays, Briefcase, CheckCircle2, XCircle, MessageSquare, StickyNote, MessageCircle } from 'lucide-react';
 import { timeAgo } from '@/lib/utils';
 import type { ApplicationStatus } from '@/lib/types';
 
@@ -125,7 +125,21 @@ export default function EmpresaAplicacionesPage() {
                   </div>
                   <div className="flex flex-wrap gap-x-3 gap-y-1 mt-1 text-xs text-slate-500">
                     <span className="flex items-center gap-1"><Briefcase className="w-3 h-3" /> Para: {app.job?.titulo}</span>
-                    {app.candidate?.telefono && <span className="flex items-center gap-1"><Phone className="w-3 h-3" /> {app.candidate.telefono}</span>}
+                    {app.candidate?.telefono && (
+                      <span className="flex items-center gap-1">
+                        <Phone className="w-3 h-3" /> {app.candidate.telefono}
+                      </span>
+                    )}
+                    {app.candidate?.telefono && (
+                      <a
+                        href={`https://wa.me/${app.candidate.telefono.replace(/\D/g, '')}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1 text-green-600 hover:text-green-700 font-medium"
+                      >
+                        <MessageCircle className="w-3 h-3" /> WhatsApp
+                      </a>
+                    )}
                     {app.candidate?.ciudad && <span className="flex items-center gap-1"><MapPin className="w-3 h-3" /> {app.candidate.ciudad}</span>}
                     <span>{timeAgo(app.created_at)}</span>
                   </div>

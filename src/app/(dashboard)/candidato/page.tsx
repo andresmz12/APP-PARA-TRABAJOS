@@ -8,7 +8,7 @@ import type { Job, JobArea, Company } from '@/lib/types';
 import { Suspense } from 'react';
 
 interface PageProps {
-  searchParams: { area?: string; q?: string };
+  searchParams: { area?: string; q?: string; modalidad?: string; verificada?: string };
 }
 
 async function JobList({ userId, searchParams }: { userId: string; searchParams: PageProps['searchParams'] }) {
@@ -25,12 +25,20 @@ async function JobList({ userId, searchParams }: { userId: string; searchParams:
     params.push(`%${searchParams.q}%`);
     idx++;
   }
+  if (searchParams.modalidad) {
+    conditions.push(`j.modalidad = $${idx++}`);
+    params.push(searchParams.modalidad);
+  }
+  if (searchParams.verificada === '1') {
+    conditions.push(`c.verificada = true`);
+  }
 
-  const jobs = await query<Job & { company_nombre: string; company_verificada: boolean; company_ciudad: string }>(
+  const jobs = await query<Job & { company_nombre: string; company_verificada: boolean; company_ciudad: string; company_telefono: string }>(
     `SELECT j.*,
        c.nombre AS company_nombre,
        c.verificada AS company_verificada,
-       c.ciudad AS company_ciudad
+       c.ciudad AS company_ciudad,
+       c.telefono AS company_telefono
      FROM jobs j JOIN companies c ON c.id = j.company_id
      WHERE ${conditions.join(' AND ')}
      ORDER BY j.created_at DESC`,
