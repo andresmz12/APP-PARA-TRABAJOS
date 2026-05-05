@@ -41,7 +41,6 @@ CREATE TABLE candidate_profiles (
   experiencia_previa TEXT,
   habilidades TEXT[] NOT NULL DEFAULT '{}',
   tiene_vehiculo BOOLEAN NOT NULL DEFAULT false,
-  tiene_moto BOOLEAN NOT NULL DEFAULT false,
   dias_disponibles TEXT[] NOT NULL DEFAULT '{}',
   turno_preferido TEXT,
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),

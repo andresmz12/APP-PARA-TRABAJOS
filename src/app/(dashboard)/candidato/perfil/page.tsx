@@ -23,7 +23,7 @@ export default function CandidatoPerfilPage() {
 
   const [form, setForm] = useState({
     nombre: '', telefono: '', ciudad: '', experiencia_previa: '',
-    habilidades: [] as string[], tiene_vehiculo: false, tiene_moto: false,
+    habilidades: [] as string[], tiene_vehiculo: false,
     dias_disponibles: [] as string[], turno_preferido: '',
   });
 
@@ -37,7 +37,7 @@ export default function CandidatoPerfilPage() {
             nombre: profile.nombre ?? '', telefono: profile.telefono ?? '',
             ciudad: profile.ciudad ?? '', experiencia_previa: profile.experiencia_previa ?? '',
             habilidades: profile.habilidades ?? [], tiene_vehiculo: profile.tiene_vehiculo ?? false,
-            tiene_moto: profile.tiene_moto ?? false, dias_disponibles: profile.dias_disponibles ?? [],
+            dias_disponibles: profile.dias_disponibles ?? [],
             turno_preferido: profile.turno_preferido ?? '',
           });
         }
@@ -159,7 +159,7 @@ export default function CandidatoPerfilPage() {
           <div>
             <p className="text-sm font-semibold text-slate-700 mb-3">Movilidad</p>
             <div className="flex flex-col gap-2">
-              {[{ field: 'tiene_vehiculo' as const, label: 'Tengo vehículo propio (carro)' }, { field: 'tiene_moto' as const, label: 'Tengo moto propia' }].map(({ field, label }) => (
+              {[{ field: 'tiene_vehiculo' as const, label: 'Tengo vehículo propio (carro)' }].map(({ field, label }) => (
                 <label key={field} className="flex items-center gap-3 cursor-pointer">
                   <div className="relative">
                     <input type="checkbox" checked={form[field]} onChange={(e) => handleChange(field, e.target.checked)} className="sr-only peer" />

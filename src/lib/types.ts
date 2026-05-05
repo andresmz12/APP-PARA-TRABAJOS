@@ -32,7 +32,6 @@ export interface CandidateProfile {
   experiencia_previa?: string;
   habilidades: string[];
   tiene_vehiculo: boolean;
-  tiene_moto: boolean;
   dias_disponibles: string[];
   turno_preferido?: string;
   updated_at: string;

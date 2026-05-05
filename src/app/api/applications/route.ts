@@ -15,7 +15,7 @@ export async function GET(req: NextRequest) {
         json_build_object(
           'nombre', cp.nombre, 'telefono', cp.telefono, 'ciudad', cp.ciudad,
           'experiencia_previa', cp.experiencia_previa, 'habilidades', cp.habilidades,
-          'tiene_vehiculo', cp.tiene_vehiculo, 'tiene_moto', cp.tiene_moto,
+          'tiene_vehiculo', cp.tiene_vehiculo,
           'dias_disponibles', cp.dias_disponibles, 'turno_preferido', cp.turno_preferido,
           'profile', json_build_object('email', u.email)
         ) AS candidate

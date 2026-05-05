@@ -4,7 +4,7 @@ import { useEffect, useState, useCallback } from 'react';
 import { Card } from '@/components/ui/Card';
 import { ApplicationStatusBadge } from '@/components/ui/Badge';
 import Button from '@/components/ui/Button';
-import { Users, Phone, MapPin, Car, Bike, CalendarDays, Briefcase, CheckCircle2, XCircle, MessageSquare } from 'lucide-react';
+import { Users, Phone, MapPin, Car, CalendarDays, Briefcase, CheckCircle2, XCircle, MessageSquare } from 'lucide-react';
 import { timeAgo } from '@/lib/utils';
 import type { ApplicationStatus } from '@/lib/types';
 
@@ -20,7 +20,6 @@ interface RichApplication {
     experiencia_previa?: string;
     habilidades: string[];
     tiene_vehiculo: boolean;
-    tiene_moto: boolean;
     dias_disponibles: string[];
     turno_preferido?: string;
     profile?: { email: string };
@@ -172,13 +171,7 @@ export default function EmpresaAplicacionesPage() {
                           Vehículo: {app.candidate.tiene_vehiculo ? 'Sí' : 'No'}
                         </span>
                       </div>
-                      <div className="flex items-center gap-1.5">
-                        <Bike className="w-3.5 h-3.5 text-slate-400" />
-                        <span className={app.candidate.tiene_moto ? 'text-green-700 font-medium' : 'text-slate-500'}>
-                          Moto: {app.candidate.tiene_moto ? 'Sí' : 'No'}
-                        </span>
-                      </div>
-                    </div>
+</div>
                   </div>
                   {app.candidate.profile?.email && (
                     <div className="sm:col-span-2 pt-2 border-t border-slate-100">
