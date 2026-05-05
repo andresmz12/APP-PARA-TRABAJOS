@@ -6,8 +6,8 @@ import './globals.css';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'App Para Trabajos',
-  description: 'Empleos en EE.UU. para hispanohablantes — conectamos empresas con candidatos sin fricciones.',
+  title: 'ChambaLatinApp',
+  description: 'Conectamos talento con oportunidades — empleos en EE.UU. para la comunidad latina.',
 };
 
 export default function RootLayout({

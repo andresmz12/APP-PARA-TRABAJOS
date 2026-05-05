@@ -1,14 +1,13 @@
 import Link from 'next/link';
-import { Briefcase, CheckCircle2, Users, Building2 } from 'lucide-react';
+import { CheckCircle2, Users, Building2 } from 'lucide-react';
 
 export default function HomePage() {
   return (
     <div className="min-h-screen bg-white flex flex-col">
       {/* Nav */}
       <header className="border-b border-slate-100 px-4 sm:px-6 h-14 flex items-center justify-between max-w-7xl mx-auto w-full">
-        <div className="flex items-center gap-2 font-bold text-slate-900">
-          <Briefcase className="w-5 h-5 text-blue-700" />
-          App Para Trabajos
+        <div className="flex items-center">
+          <img src="/logo.png" alt="ChambaLatinApp" className="h-8 w-auto" />
         </div>
         <div className="flex items-center gap-2">
           <Link
@@ -96,7 +95,7 @@ export default function HomePage() {
       </main>
 
       <footer className="text-center text-xs text-slate-400 py-6 border-t border-slate-100">
-        App Para Trabajos © {new Date().getFullYear()}
+        ChambaLatinApp © {new Date().getFullYear()}
       </footer>
     </div>
   );

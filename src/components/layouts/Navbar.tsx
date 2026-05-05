@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { signOut } from 'next-auth/react';
 import type { UserRole } from '@/lib/types';
-import { LogOut, Briefcase } from 'lucide-react';
+import { LogOut } from 'lucide-react';
 
 interface NavbarProps {
   role: UserRole;
@@ -35,13 +35,8 @@ export default function Navbar({ role, email }: NavbarProps) {
   return (
     <header className="bg-white border-b border-slate-200 sticky top-0 z-30">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between gap-4">
-        <Link
-          href={roleHome[role]}
-          className="flex items-center gap-2 font-bold text-slate-900 text-base shrink-0"
-        >
-          <Briefcase className="w-5 h-5 text-blue-700" />
-          <span className="hidden sm:block">App Para Trabajos</span>
-          <span className="sm:hidden">APT</span>
+        <Link href={roleHome[role]} className="flex items-center shrink-0">
+          <img src="/logo.png" alt="ChambaLatinApp" className="h-8 w-auto" />
         </Link>
 
         <div className="flex items-center gap-3">
