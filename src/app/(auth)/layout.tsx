@@ -1,11 +1,12 @@
 import Link from 'next/link';
+import BrandLogo from '@/components/ui/BrandLogo';
 
 export default function AuthLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col">
       <header className="px-4 sm:px-6 h-14 flex items-center border-b border-slate-200 bg-white">
-        <Link href="/" className="flex items-center">
-          <img src="/logo.png" alt="ChambaLatinApp" className="h-8 w-auto" />
+        <Link href="/">
+          <BrandLogo size="sm" />
         </Link>
       </header>
 

@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { Users, Building2, MapPin, Clock, TrendingUp, CheckCircle2, HardHat, ChefHat, Truck, Wrench, Shield, Sparkles } from 'lucide-react';
+import BrandLogo from '@/components/ui/BrandLogo';
 
 export default function HomePage() {
   return (
@@ -8,7 +9,7 @@ export default function HomePage() {
       {/* ── Header ── */}
       <header className="sticky top-0 z-40 bg-white/90 backdrop-blur border-b border-slate-100">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
-          <img src="/logo.png" alt="ChambaLatinApp" className="h-9 w-auto" />
+          <BrandLogo size="md" />
           <div className="flex items-center gap-2">
             <Link href="/login"
               className="text-sm font-medium text-slate-700 hover:text-slate-900 px-4 py-2 rounded-lg hover:bg-slate-50 transition-colors">
@@ -247,7 +248,7 @@ export default function HomePage() {
       {/* ── Footer ── */}
       <footer className="bg-slate-900 text-slate-400 py-10 px-4 sm:px-6">
         <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
-          <img src="/logo.png" alt="ChambaLatinApp" className="h-8 w-auto brightness-0 invert opacity-70" />
+          <BrandLogo size="sm" inverted />
           <p className="text-sm text-center">
             ChambaLatinApp © {new Date().getFullYear()} · Conectamos talento con oportunidades
           </p>
