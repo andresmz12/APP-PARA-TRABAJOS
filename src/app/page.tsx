@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Users, Building2, MapPin, Clock, TrendingUp, CheckCircle2, HardHat, ChefHat, Truck, Wrench, Shield, Sparkles } from 'lucide-react';
+import { Users, Building2, MapPin, Clock, TrendingUp, CheckCircle2, HardHat, ChefHat, Truck, Wrench, Shield } from 'lucide-react';
 import BrandLogo from '@/components/ui/BrandLogo';
 
 export default function HomePage() {
@@ -30,12 +30,6 @@ export default function HomePage() {
         <div className="absolute bottom-0 left-0 w-72 h-72 bg-brand-500/10 rounded-full translate-y-1/2 -translate-x-1/4 blur-3xl" />
 
         <div className="relative max-w-6xl mx-auto px-4 sm:px-6 py-20 sm:py-28 text-center">
-          {/* badge */}
-          <span className="inline-flex items-center gap-2 bg-brand-500/20 text-brand-400 text-xs font-bold px-4 py-1.5 rounded-full uppercase tracking-widest mb-6 border border-brand-500/30">
-            <Sparkles className="w-3.5 h-3.5" />
-            En construcción · Lanzamiento próximo
-          </span>
-
           <h1 className="text-4xl sm:text-6xl font-extrabold leading-tight mb-5">
             Empleos reales para la
             <br />
